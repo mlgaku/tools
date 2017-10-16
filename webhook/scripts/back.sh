@@ -1,6 +1,6 @@
 pkill maile-backend
 rm /root/back/maile-backend
-go get github.com/mlgaku/back
+go get -u github.com/mlgaku/back
 cd $GOPATH/src/github.com/mlgaku/back
 go build main.go
 mkdir /root/back

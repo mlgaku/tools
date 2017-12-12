@@ -30,7 +30,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             if not hmac.compare_digest(str(mac.hexdigest()), str(signature)):
                 return
 
-        os.system('sh scripts/%s.sh >> log.txt &' % loads(post_data.decode('utf-8'))['repository']['name'])
+        os.system('bash scripts/%s.sh >> log.txt &' % loads(post_data.decode('utf-8'))['repository']['name'])
 
         self._send_headers()
         self.wfile.write(b'Ok')

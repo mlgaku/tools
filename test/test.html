@@ -1,0 +1,80 @@
+<meta charset="utf-8">
+<div>
+    model: <input type="text" id="mod" value="test"><br>
+    action: <input type="text" id="act" value="sayHello"><br>
+    body: <textarea name="" id="" cols="30" rows="10">{}</textarea>
+    <button id="send">Send</button>
+</div>
+<div id="output"></div>
+
+<style>
+    #output {
+        margin-top: 20px;
+    }
+    #output > div {
+        padding: 5px 10px;
+        background: beige;
+        box-shadow: 2px 2px 5px 0px #c5c5c5;
+        margin-bottom: 10px;
+    }
+    body {
+        line-height: 35px;
+    }
+    input {
+        padding: 3px;
+        outline: none;
+    }
+    textarea {
+        padding: 5px;
+        display: block;
+        outline: none;
+        border: 1px solid #d2d2d2;
+        margin-bottom: 10px;
+    }
+</style>
+
+<script>
+
+    var ws;
+    var output = document.querySelector("#output");
+
+    // 日志
+    function log(msg) {
+        var div = document.createElement("div");
+        div.innerText = msg;
+        output.appendChild(div);
+    }
+
+    // 连接
+    function connect() {
+        ws = new WebSocket("ws://127.0.0.1:8080/api");
+
+        ws.onopen = function (evt) {
+            log("Open");
+        };
+
+        ws.onclose = function (evt) {
+            log("Close");
+            ws = null;
+        };
+
+        ws.onmessage = function (evt) {
+            log("Response: " + evt.data);
+        };
+
+        ws.onerror = function (evt) {
+            log("Error: " + evt.data);
+        };
+    }
+
+    connect();
+    document.querySelector("button").onclick = function () {
+        var data = JSON.stringify({
+            mod: document.querySelector("#mod").value,
+            act: document.querySelector("#act").value,
+            body: document.querySelector("textarea").value
+        });
+        ws.send(data);
+    }
+
+</script>
